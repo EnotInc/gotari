@@ -6,8 +6,8 @@ import (
 	"os"
 	"strings"
 
+	"github.con/enotinc/gotari/enums/cmd"
 	"github.con/enotinc/gotari/enums/keys"
-	"github.con/enotinc/gotari/enums/keys/cmd"
 	"golang.org/x/term"
 )
 
