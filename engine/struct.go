@@ -38,6 +38,7 @@ type Menu interface {
 	SelectedGame() *Game
 }
 
+// TODO: add func to set cursor position and type
 type Game interface {
 	// mainly used in menu, to get them name of the game
 	Name() string

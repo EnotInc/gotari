@@ -2,7 +2,6 @@ package colors
 
 const (
 	Reset     string = "\033[0m"
-	Black     string = "\033[30m"
 	Red       string = "\033[31m"
 	Green     string = "\033[32m"
 	Yellow    string = "\033[33m"
