@@ -2,6 +2,9 @@ package foo
 
 import (
 	"fmt"
+
+	"github.con/enotinc/gotari/engine"
+	"github.con/enotinc/gotari/enums/keys"
 )
 
 type FooGame struct {
@@ -30,7 +33,7 @@ func (fg *FooGame) Render() []*string {
 	return str
 }
 
-func (fg *FooGame) Handle(key rune) {
+func (fg *FooGame) Handle(key rune) engine.CMD {
 	switch key {
 	case 'j':
 		if fg.cursor < len(fg.list)-1 {
@@ -40,7 +43,10 @@ func (fg *FooGame) Handle(key rune) {
 		if fg.cursor > 0 {
 			fg.cursor -= 1
 		}
+	case keys.Esc:
+		return engine.CloseGame
 	}
+	return nil
 }
 
 func (fg *FooGame) Name() string {

@@ -25,6 +25,10 @@ func (m *MainMenu) LoadList(games []*engine.Game) {
 	}
 }
 
+func (m *MainMenu) SelectedGame() *engine.Game {
+	return m.games[m.cursor]
+}
+
 func (m *MainMenu) Render() []*string {
 	var render []*string
 	for index, game := range m.games {
@@ -40,19 +44,24 @@ func (m *MainMenu) Render() []*string {
 	return render
 }
 
-func (m *MainMenu) Handle(key rune) *engine.Game {
+func (m *MainMenu) Handle(key rune) engine.CMD {
 	switch key {
 	case 'j':
 		if m.cursor < len(m.games)-1 {
 			m.cursor += 1
 		}
+
 	case 'k':
 		if m.cursor > 0 {
 			m.cursor -= 1
 		}
+
+	case keys.Esc:
+		return engine.QuitGotari
+
 	case keys.Enter:
 		if m.cursor >= 0 && m.cursor <= len(m.games)-1 {
-			return m.games[m.cursor]
+			return engine.SelectGame
 		}
 	}
 

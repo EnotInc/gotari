@@ -7,7 +7,6 @@ import (
 	"strings"
 
 	"github.con/enotinc/gotari/enums/ascii"
-	"github.con/enotinc/gotari/enums/keys"
 	"golang.org/x/term"
 )
 
@@ -22,12 +21,10 @@ func Init(menu Menu) *Engine {
 	}
 
 	return &Engine{
-		hash: make(map[int]uint32),
-
 		fullscreen: false,
 
+		hash: make(map[int]uint32),
 		menu: &menu,
-
 		old:  _old,
 		fdIn: _fdIn,
 	}
@@ -82,24 +79,33 @@ func (e *Engine) Run() {
 			panic(err)
 		}
 
-		if key == keys.Esc {
-			return
+		if quit := e.handle(key); quit {
+			break
 		}
-
-		e.handle(key)
 		e.render()
 	}
 }
 
 // TODO: add mouse and arrows support
-func (e *Engine) handle(key rune) {
+func (e *Engine) handle(key rune) bool {
 	if e.game == nil {
-		game := (*e.menu).Handle(key)
-		if game != nil {
-			e.game = game
+		cmd := (*e.menu).Handle(key)
+		if cmd != nil {
+			switch cmd {
+			case SelectGame:
+				e.game = (*e.menu).SelectedGame()
+			case QuitGotari:
+				return true
+			}
 		}
 
 	} else {
-		(*e.game).Handle(key)
+		command := (*e.game).Handle(key)
+		switch command {
+		case CloseGame:
+			e.game = nil
+		}
 	}
+
+	return false
 }
