@@ -41,8 +41,19 @@ func (m *MainMenu) Render() []*string {
 }
 
 func (m *MainMenu) Handle(key rune) *engine.Game {
-	if key == keys.Enter && m.cursor >= 0 && m.cursor <= len(m.games)-1 {
-		return m.games[m.cursor]
+	switch key {
+	case 'j':
+		if m.cursor < len(m.games)-1 {
+			m.cursor += 1
+		}
+	case 'k':
+		if m.cursor > 0 {
+			m.cursor -= 1
+		}
+	case keys.Enter:
+		if m.cursor >= 0 && m.cursor <= len(m.games)-1 {
+			return m.games[m.cursor]
+		}
 	}
 
 	return nil

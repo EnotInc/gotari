@@ -91,6 +91,7 @@ func (e *Engine) Run() {
 	}
 }
 
+// TODO: add mouse and arrows support
 func (e *Engine) handle(key rune) {
 	if e.game == nil {
 		game := (*e.menu).Handle(key)

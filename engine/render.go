@@ -34,7 +34,7 @@ func (e *Engine) renderMenu() {
 			if e.fullscreen {
 				pos = fmt.Sprintf("\033[%d;%d;H", index+termOffset, termOffset)
 			} else {
-				pos = "\n"
+				pos = "\n\r"
 			}
 
 			clear := "\033[0K"
@@ -66,7 +66,7 @@ func (e *Engine) renderGame() {
 			if e.fullscreen {
 				pos = fmt.Sprintf("\033[%d;%d;H", index+termOffset, termOffset)
 			} else {
-				pos = "\n"
+				pos = "\n\r"
 			}
 
 			clear := "\033[0K"
