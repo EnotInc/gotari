@@ -21,6 +21,7 @@ func Init(menu Menu) *Engine {
 	}
 
 	return &Engine{
+		// FIXME: move to options, or smth
 		fullscreen: false,
 
 		hash: make(map[int]uint32),
@@ -93,6 +94,7 @@ func (e *Engine) handle(key rune) bool {
 		if cmd != nil {
 			switch cmd {
 			case SelectGame:
+				e.clear()
 				e.game = (*e.menu).SelectedGame()
 			case QuitGotari:
 				return true
@@ -103,6 +105,7 @@ func (e *Engine) handle(key rune) bool {
 		command := (*e.game).Handle(key)
 		switch command {
 		case CloseGame:
+			e.clear()
 			e.game = nil
 		}
 	}

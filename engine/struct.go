@@ -43,8 +43,8 @@ type Game interface {
 	Name() string
 
 	// each string will be rendered with an engine 'diff render'.
-	// You shoudn't add '\n\r' at the end of the line, engine will do this for you
-	// TODO: if the is a '\n\r' at the end of the given line, don't add oner
+	// You shoudn't add '\n\r' at the end of the line, engine will do this for you. And if you add - it will be replaced
+	// And you shoudn't add '\n\r' anyware. This will most likely break render, coz it goes 'line by line'. See Engine.render() to see how it works
 	Render() []*string
 
 	// used to handle input keys. Mouse support isn't ready yet

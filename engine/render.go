@@ -15,6 +15,30 @@ func (e *Engine) render() {
 	}
 }
 
+func trimNewLine(l string) string {
+	var trim = l
+	trim = strings.TrimSuffix(trim, "\n\r")
+	trim = strings.TrimSuffix(trim, "\n")
+	trim = strings.TrimSuffix(trim, "\r")
+	trim = strings.TrimPrefix(trim, "\n\r")
+	trim = strings.TrimPrefix(trim, "\n")
+	trim = strings.TrimPrefix(trim, "\r")
+	return trim
+}
+
+func (e *Engine) clear() {
+	var clear strings.Builder
+	if e.fullscreen {
+		clear.WriteString(ascii.ClearView)
+		clear.WriteString(ascii.MoveToStart)
+	} else {
+		clear.WriteString(ascii.ResetCursorPos)
+		clear.WriteString(ascii.MoveDown)
+		clear.WriteString(ascii.ClearAfter)
+	}
+	fmt.Print(clear.String())
+}
+
 func (e *Engine) renderMenu() {
 	var diff strings.Builder
 
@@ -30,6 +54,7 @@ func (e *Engine) renderMenu() {
 
 		if !ok || (ok && curHash != oldHash) {
 			var pos string
+			trim := trimNewLine(*line)
 
 			if e.fullscreen {
 				pos = fmt.Sprintf("\033[%d;%d;H", index+termOffset, termOffset)
@@ -41,7 +66,7 @@ func (e *Engine) renderMenu() {
 
 			diff.WriteString(pos)
 			diff.WriteString(clear)
-			diff.WriteString(*line)
+			diff.WriteString(trim)
 		}
 	}
 	fmt.Print(diff.String())
@@ -62,6 +87,7 @@ func (e *Engine) renderGame() {
 
 		if !ok || (ok && curHash != oldHash) {
 			var pos string
+			trim := trimNewLine(*line)
 
 			if e.fullscreen {
 				pos = fmt.Sprintf("\033[%d;%d;H", index+termOffset, termOffset)
@@ -73,7 +99,7 @@ func (e *Engine) renderGame() {
 
 			diff.WriteString(pos)
 			diff.WriteString(clear)
-			diff.WriteString(*line)
+			diff.WriteString(trim)
 		}
 	}
 	fmt.Print(diff.String())
