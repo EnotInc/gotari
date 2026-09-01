@@ -1,67 +1,64 @@
 package tictactoe
 
-import "fmt"
+import (
+	"fmt"
+
+	color "github.con/enotinc/gotari/enums/color"
+)
 
 const (
-	reset = "\033[0m"
-
-	yellow = "\033[33m"
-	green  = "\033[32m"
-	gray   = "\033[90m"
-	red    = "\033[31m"
-
 	symbol_cross = "x"
 	symbol_zero  = "o"
 )
 
 func ToStr(s sqare, at int, w win) string {
 	if s == empty {
-		return fmt.Sprintf(" %s%d%s ", gray, at+1, reset)
+		return fmt.Sprintf(" %s%d%s ", color.Gray, at+1, color.Reset)
 	}
 
 	switch w {
 	case row1:
 		if at == 0 || at == 1 || at == 2 {
-			return fmt.Sprintf("%s---%s", yellow, reset)
+			return fmt.Sprintf("%s---%s", color.Yellow, color.Reset)
 		}
 	case row2:
 		if at == 3 || at == 4 || at == 5 {
-			return fmt.Sprintf("%s---%s", yellow, reset)
+			return fmt.Sprintf("%s---%s", color.Yellow, color.Reset)
 		}
 	case row3:
 		if at == 6 || at == 7 || at == 8 {
-			return fmt.Sprintf("%s---%s", yellow, reset)
+			return fmt.Sprintf("%s---%s", color.Yellow, color.Reset)
 		}
 
 	case col1:
 		if at == 0 || at == 3 || at == 6 {
-			return fmt.Sprintf(" %s|%s ", yellow, reset)
+			return fmt.Sprintf(" %s|%s ", color.Yellow, color.Reset)
 		}
 	case col2:
 		if at == 1 || at == 4 || at == 7 {
-			return fmt.Sprintf(" %s|%s ", yellow, reset)
+			return fmt.Sprintf(" %s|%s ", color.Yellow, color.Reset)
 		}
 	case col3:
 		if at == 2 || at == 5 || at == 8 {
-			return fmt.Sprintf(" %s|%s ", yellow, reset)
+			return fmt.Sprintf(" %s|%s ", color.Yellow, color.Reset)
 		}
 
 	case diagA:
 		if at == 0 || at == 4 || at == 8 {
-			return fmt.Sprintf(" %s\\%s ", yellow, reset)
+			return fmt.Sprintf(" %s\\%s ", color.Yellow, color.Reset)
 		}
 
 	case diagB:
 		if at == 2 || at == 4 || at == 6 {
-			return fmt.Sprintf(" %s/%s ", yellow, reset)
+			return fmt.Sprintf(" %s/%s ", color.Yellow, color.Reset)
 		}
 	}
 
 	switch s {
 	case cross:
-		return fmt.Sprintf(" %s%s%s ", red, symbol_cross, reset)
+		return fmt.Sprintf(" %s%s%s ", color.Red, symbol_cross, color.Reset)
 	case zero:
-		return fmt.Sprintf(" %s%s%s ", green, symbol_zero, reset)
+		return fmt.Sprintf(" %s%s%s ", color.Green, symbol_zero, color.Reset)
 	}
 	return ""
 }

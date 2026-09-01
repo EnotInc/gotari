@@ -1,14 +1,18 @@
 package menu
 
-import "strings"
+import (
+	"strings"
+
+	color "github.con/enotinc/gotari/enums/color"
+)
 
 func (c *card) render(selected bool) []*string {
 	var render []*string
 	amount := 20
-	color := gray
+	clr := color.Gray
 	if selected {
 		amount = 25
-		color = blue
+		clr = color.LightBlue
 	}
 
 	border := strings.Repeat(horisontal, amount)
@@ -17,15 +21,15 @@ func (c *card) render(selected bool) []*string {
 	var lowerBorder strings.Builder
 	var middle strings.Builder
 
-	upperBorder.WriteString(color)
+	upperBorder.WriteString(clr)
 	upperBorder.WriteString(border)
 	upperBorder.WriteString(uppreCorner)
-	upperBorder.WriteString(reset)
+	upperBorder.WriteString(color.Reset)
 
-	lowerBorder.WriteString(color)
+	lowerBorder.WriteString(clr)
 	lowerBorder.WriteString(border)
 	lowerBorder.WriteString(lowerCorner)
-	lowerBorder.WriteString(reset)
+	lowerBorder.WriteString(color.Reset)
 
 	gameName := c.name
 	nameAmount := amount - len(gameName)
@@ -36,9 +40,9 @@ func (c *card) render(selected bool) []*string {
 	nameSpace := strings.Repeat(" ", nameAmount)
 	middle.WriteString(nameSpace)
 	middle.WriteString(gameName)
-	middle.WriteString(color)
+	middle.WriteString(clr)
 	middle.WriteString(vertical)
-	middle.WriteString(reset)
+	middle.WriteString(color.Reset)
 
 	u := upperBorder.String()
 	m := middle.String()

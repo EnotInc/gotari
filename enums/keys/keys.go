@@ -1,7 +1,8 @@
 package keys
 
 const (
-	Space rune = ' '
-	Enter rune = 13
-	Esc   rune = '\033'
+	Backspace rune = 127
+	Space     rune = ' '
+	Enter     rune = 13
+	Esc       rune = '\033'
 )

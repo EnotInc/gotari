@@ -9,10 +9,6 @@ const (
 	uppreCorner = "╮"
 	vertical    = "│"
 	lowerCorner = "╯"
-
-	reset = "\033[0m"
-	gray  = "\033[90m"
-	blue  = "\033[34m"
 )
 
 type card struct {
