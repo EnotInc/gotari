@@ -11,7 +11,7 @@ type Engine struct {
 	game *Game
 
 	// game selection menu
-	menu Menu
+	menu *Menu
 
 	// map of line indexes to saved hashes
 	hash map[int]uint32
@@ -25,11 +25,15 @@ type Engine struct {
 
 type Menu interface {
 	Render() []*string
-	Handle(key rune)
-	Begin() *Game
+	LoadList(games []*Game)
+
+	// if game was selected in menu, this game will be returned
+	// if game wasn't selected - nil must me returned
+	Handle(key rune) *Game
 }
 
 type Game interface {
+	Name() string
 	Render() []*string
 	Handle(key rune)
 }

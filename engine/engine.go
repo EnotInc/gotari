@@ -13,7 +13,7 @@ import (
 
 const termOffset int = 1
 
-func Init(fullscreen bool) *Engine {
+func Init(menu Menu) *Engine {
 	_fdIn := int(os.Stdin.Fd())
 
 	_old, err := term.MakeRaw(_fdIn)
@@ -24,7 +24,9 @@ func Init(fullscreen bool) *Engine {
 	return &Engine{
 		hash: make(map[int]uint32),
 
-		fullscreen: fullscreen,
+		fullscreen: false,
+
+		menu: &menu,
 
 		old:  _old,
 		fdIn: _fdIn,
@@ -33,18 +35,10 @@ func Init(fullscreen bool) *Engine {
 
 func (e *Engine) AddGame(g Game) {
 	e.Games = append(e.Games, &g)
-
-	// FIXME: select game with menu
-	e.game = &g
-}
-
-func (e *Engine) List() []*Game {
-	return e.Games
 }
 
 func (e *Engine) begin() {
 	var begin strings.Builder
-
 	if e.fullscreen {
 		begin.WriteString(ascii.SaveTerminal)
 		begin.WriteString(ascii.ClearHistory)
@@ -53,8 +47,9 @@ func (e *Engine) begin() {
 		begin.WriteString(ascii.MoveUp)
 		begin.WriteString(ascii.SaveCursorPos)
 	}
-
 	fmt.Print(begin.String())
+
+	(*e.menu).LoadList(e.Games)
 }
 
 func (e *Engine) exit() {
@@ -87,14 +82,23 @@ func (e *Engine) Run() {
 			panic(err)
 		}
 
-		// FIXME: quit in menu
-		// TODO: figure out how to create menu
 		if key == keys.Esc {
-			break
+			return
 		}
 
-		game := *e.game
-		game.Handle(key)
+		e.handle(key)
 		e.render()
+	}
+}
+
+func (e *Engine) handle(key rune) {
+	if e.game == nil {
+		game := (*e.menu).Handle(key)
+		if game != nil {
+			e.game = game
+		}
+
+	} else {
+		(*e.game).Handle(key)
 	}
 }

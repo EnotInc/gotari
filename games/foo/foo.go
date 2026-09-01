@@ -42,3 +42,7 @@ func (fg *FooGame) Handle(key rune) {
 		}
 	}
 }
+
+func (fg *FooGame) Name() string {
+	return "foo game"
+}
