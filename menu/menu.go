@@ -1,53 +1,50 @@
 package menu
 
 import (
-	"fmt"
-
 	"github.con/enotinc/gotari/engine"
 	"github.con/enotinc/gotari/enums/keys"
 )
 
 type MainMenu struct {
-	games  []*engine.Game
+	cards  []*card
 	cursor int
 }
 
 func Init() *MainMenu {
 	return &MainMenu{
-		games:  make([]*engine.Game, 0),
+		cards:  make([]*card, 0),
 		cursor: 0,
 	}
 }
 
 func (m *MainMenu) LoadList(games []*engine.Game) {
 	for _, game := range games {
-		m.games = append(m.games, game)
+		c := NewCard((*game).Name(), game)
+		m.cards = append(m.cards, c)
 	}
 }
 
 func (m *MainMenu) SelectedGame() *engine.Game {
-	return m.games[m.cursor]
+	return m.cards[m.cursor].game
 }
 
 func (m *MainMenu) Render() []*string {
 	var render []*string
-	for index, game := range m.games {
-		c := " "
-		if index == m.cursor {
-			c = ">"
-		}
-
-		name := (*game).Name()
-		line := fmt.Sprintf("%s%s", c, name)
-		render = append(render, &line)
+	title := " List of games:"
+	clue := " press <enter> or <space> to select a game. <esc> to quit"
+	render = append(render, &title)
+	render = append(render, &clue)
+	for index, card := range m.cards {
+		render = append(render, card.render(index == m.cursor)...)
 	}
+
 	return render
 }
 
 func (m *MainMenu) Handle(key rune) engine.CMD {
 	switch key {
 	case 'j':
-		if m.cursor < len(m.games)-1 {
+		if m.cursor < len(m.cards)-1 {
 			m.cursor += 1
 		}
 
@@ -59,8 +56,8 @@ func (m *MainMenu) Handle(key rune) engine.CMD {
 	case keys.Esc:
 		return engine.QuitGotari
 
-	case keys.Enter:
-		if m.cursor >= 0 && m.cursor <= len(m.games)-1 {
+	case keys.Enter, keys.Space:
+		if m.cursor >= 0 && m.cursor <= len(m.cards)-1 {
 			return engine.SelectGame
 		}
 	}
