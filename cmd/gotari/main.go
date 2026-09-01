@@ -7,7 +7,7 @@ import (
 
 func main() {
 	fg := foo.Init()
-	eng := engine.Init()
+	eng := engine.Init(false)
 	eng.AddGame(fg)
 
 	eng.Run()
