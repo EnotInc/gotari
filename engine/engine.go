@@ -33,11 +33,30 @@ func Init(menu Menu) *Engine {
 		cursor: c,
 	}
 	e.cursor.changeCursor(Hidden)
+	e.setStartedPoint()
 	return e
 }
 
 func (e *Engine) AddGame(g Game) {
 	e.Games = append(e.Games, &g)
+}
+
+func (e *Engine) setStartedPoint() {
+	y := 0
+	if !e.fullscreen {
+		var row, col int
+		fmt.Print("\033[6n")
+		_, err := fmt.Fscanf(os.Stdin, "\033[%d;%dR", &row, &col)
+		if err != nil {
+			panic(err)
+		} else {
+			y = row - termOffset
+		}
+	}
+	e.starting = Position{
+		X: 0,
+		Y: y,
+	}
 }
 
 func (e *Engine) begin() {
@@ -102,6 +121,9 @@ func (e *Engine) handle(key rune) bool {
 			case cmd.SelectGame:
 				e.clear()
 				e.game = (*e.menu).SelectedGame()
+				kind, pos := (*e.game).CursorInfo()
+				e.cursor.changeCursor(kind)
+				e.cursor.changePos(pos)
 			case cmd.QuitGotari:
 				return true
 			}
@@ -113,7 +135,13 @@ func (e *Engine) handle(key rune) bool {
 		case cmd.CloseGame:
 			e.clear()
 			e.game = nil
+
+		default:
+			kind, pos := (*e.game).CursorInfo()
+			e.cursor.changeCursor(kind)
+			e.cursor.changePos(pos)
 		}
+
 	}
 
 	return false

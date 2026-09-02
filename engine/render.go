@@ -104,5 +104,9 @@ func (e *Engine) renderGame() {
 			diff.WriteString(trim)
 		}
 	}
+	x, y := e.cursor.getRealPos(e.starting)
+	moveto := fmt.Sprintf("\033[%d;%dH", y, x)
+	diff.WriteString(moveto)
+
 	fmt.Print(diff.String())
 }

@@ -4,6 +4,7 @@ import "fmt"
 
 type CursorKind int
 
+// TODO: move to enigne/cursor
 const (
 	_ CursorKind = iota
 	Block
@@ -23,6 +24,10 @@ const (
 
 func newCursor() *cursor {
 	return &cursor{}
+}
+
+func (c *cursor) changePos(p Position) {
+	c.pos = p
 }
 
 func (c *cursor) changeCursor(new CursorKind) {
@@ -46,4 +51,8 @@ func (c *cursor) changeCursor(new CursorKind) {
 	}
 
 	c.kind = new
+}
+
+func (c cursor) getRealPos(starting Position) (x int, y int) {
+	return starting.X + c.pos.X, starting.Y + c.pos.Y
 }

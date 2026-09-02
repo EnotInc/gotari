@@ -10,6 +10,8 @@ type Engine struct {
 	// list of games
 	Games []*Game
 
+	starting Position
+
 	// selected (currently played) game
 	game *Game
 
@@ -28,7 +30,8 @@ type Engine struct {
 }
 
 type Position struct {
-	x, y int
+	X,
+	Y int
 }
 
 type cursor struct {
@@ -73,6 +76,5 @@ type Game interface {
 
 	// this funcion will be called before Render()
 	// after cursor kind will be apllied
-	// TODO: move cursor to the Position
 	CursorInfo() (CursorKind, Position)
 }

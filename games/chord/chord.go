@@ -40,8 +40,14 @@ func Init() *Chord {
 }
 
 func (c *Chord) CursorInfo() (engine.CursorKind, engine.Position) {
-	// TODO: change cursor kind and position
-	return engine.Hidden, engine.Position{}
+	kind := engine.Line
+	if c.ended {
+		kind = engine.Hidden
+	}
+	return kind, engine.Position{
+		X: len(c.input) + 2,
+		Y: 2,
+	}
 }
 
 func (c *Chord) Handle(key rune) cmd.CMD {
