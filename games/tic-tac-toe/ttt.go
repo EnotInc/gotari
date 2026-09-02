@@ -1,6 +1,7 @@
 package tictactoe
 
 import (
+	"github.con/enotinc/gotari/engine"
 	"github.con/enotinc/gotari/engine/cmd"
 	"github.con/enotinc/gotari/engine/cursor"
 	"github.con/enotinc/gotari/enums/keys"
@@ -48,12 +49,25 @@ func (t *TTT) Render() []*string {
 	return t.draw()
 }
 
-func (t *TTT) Handle(key rune) cmd.CMD {
+const failedClick rune = '-'
+
+func (t *TTT) Handle(event engine.Event) cmd.CMD {
+	var key rune
+
+	switch e := event.(type) {
+	case engine.MouseEvent:
+		key = t.clickToRune(e.X, e.Y)
+	case engine.KeyEvent:
+		key = e.Key
+	}
+
 	switch key {
 	case keys.Esc:
 		return cmd.CloseGame
 	case 'r':
 		t.reset()
+		return nil
+	case failedClick:
 		return nil
 	}
 

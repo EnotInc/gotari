@@ -1,6 +1,9 @@
 package tictactoe
 
-import "strconv"
+import (
+	"fmt"
+	"strconv"
+)
 
 type win string
 
@@ -19,6 +22,48 @@ const (
 	col2 win = "c2"
 	col3 win = "c3"
 )
+
+func (t *TTT) clickToRune(x, y int) rune {
+	getCol := func() int {
+		switch x {
+		case 0, 1, 2:
+			return 0
+
+		case 4, 5, 6:
+			return 1
+
+		case 8, 9, 10:
+			return 2
+
+		default:
+			return -1
+		}
+	}
+
+	getRow := func() int {
+		switch y {
+		case 0:
+			return 0
+
+		case 2, 4:
+			return y / 2
+
+		default:
+			return -1
+		}
+	}
+
+	col := getCol()
+	row := getRow()
+
+	if col == -1 || row == -1 {
+		return failedClick
+	}
+
+	const inputOfset int = 1
+	pos := fmt.Sprintf("%d", 3*row+col+inputOfset)
+	return rune(pos[0])
+}
 
 func (t *TTT) isWin() win {
 	if t.board[0] == t.board[1] && t.board[1] == t.board[2] && t.board[2] != empty {

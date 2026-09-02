@@ -39,7 +39,7 @@ type Menu interface {
 	// if game was selected in menu, this game will be returned
 	// if game wasn't selected - nil must me returned
 	// CMD - usend only to check for QuitGotari. If it catch this CMD - programm will be closed
-	Handle(key rune) cmd.CMD
+	Handle(event Event) cmd.CMD
 
 	// if engine resieve a CMD.SelectGame - this function will be called to get selected game
 	SelectedGame() *Game
@@ -58,7 +58,7 @@ type Game interface {
 
 	// used to handle input keys. Mouse support isn't ready yet
 	// func must return engine.CMD (CloseGame for example), or nil if nothing happened
-	Handle(key rune) cmd.CMD
+	Handle(event Event) cmd.CMD
 
 	// this funcion will be called before Render()
 	// after cursor kind will be apllied

@@ -14,6 +14,9 @@ const (
 	SaveCursorPos  = "\033[s"
 	ResetCursorPos = "\033[u"
 
+	EnableMouse  = "\033[?1002h"
+	DisableMouse = "\033[?1006h"
+
 	BorderHorisontal = "─"
 	BorderVertical   = "│"
 	BorderUpperRight = "╮"

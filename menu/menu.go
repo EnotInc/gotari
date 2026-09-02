@@ -43,7 +43,20 @@ func (m *MainMenu) Render() []*string {
 	return render
 }
 
-func (m *MainMenu) Handle(key rune) cmd.CMD {
+func (m *MainMenu) Handle(event engine.Event) cmd.CMD {
+	var key rune
+
+	switch e := event.(type) {
+	case engine.MouseEvent:
+		open := m.selectGameAt(e.X, e.Y)
+		if open {
+			return cmd.SelectGame
+		}
+		return nil
+	case engine.KeyEvent:
+		key = e.Key
+	}
+
 	switch key {
 	case 'j':
 		if m.cursor < len(m.cards)-1 {
@@ -69,4 +82,23 @@ func (m *MainMenu) Handle(key rune) cmd.CMD {
 
 func (m *MainMenu) CursorInfo() (cursor.Kind, cursor.Position) {
 	return cursor.Hidden, cursor.Position{}
+}
+
+func (m *MainMenu) selectGameAt(x, y int) (oppened bool) {
+	if x > 25 {
+		return false
+	}
+
+	_y := y / 3 // height of game in render
+	_y -= 1     // terminal ofset
+	if _y < 0 || _y > len(m.cards) {
+		return false
+	}
+
+	if _y == m.cursor {
+		return true
+	} else {
+		m.cursor = _y
+		return false
+	}
 }

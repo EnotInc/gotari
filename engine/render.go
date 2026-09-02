@@ -9,8 +9,16 @@ import (
 
 func (e *Engine) render() {
 	if e.game == nil {
+		kind, pos := (*e.menu).CursorInfo()
+		e.cursor.ChangeCursor(kind)
+		e.cursor.ChangePos(pos)
+
 		e.renderMenu()
 	} else {
+		kind, pos := (*e.game).CursorInfo()
+		e.cursor.ChangeCursor(kind)
+		e.cursor.ChangePos(pos)
+
 		e.renderGame()
 	}
 }

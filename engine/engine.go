@@ -1,7 +1,6 @@
 package engine
 
 import (
-	"bufio"
 	"fmt"
 	"os"
 	"strings"
@@ -69,6 +68,8 @@ func (e *Engine) begin() {
 		begin.WriteString(ascii.MoveUp)
 		begin.WriteString(ascii.SaveCursorPos)
 	}
+
+	begin.WriteString(ascii.EnableMouse)
 	fmt.Print(begin.String())
 
 	(*e.menu).LoadList(e.Games)
@@ -88,9 +89,14 @@ func (e *Engine) exit() {
 		quit.WriteString(ascii.ClearAfter)
 	}
 
+	quit.WriteString(ascii.DisableMouse)
 	quit.WriteString(e.cursor.Reset())
 	fmt.Print(quit.String())
 	term.Restore(e.fdIn, e.old)
+
+	if r := recover(); r != nil {
+		fmt.Print(r)
+	}
 }
 
 func (e *Engine) Run() {
@@ -98,16 +104,55 @@ func (e *Engine) Run() {
 	e.render()
 	defer e.exit()
 
-	reader := bufio.NewReader(os.Stdin)
 	for {
-		key, _, err := reader.ReadRune()
-		if err != nil {
-			panic(err)
+		event := e.getEvent()
+		if event == nil {
+			continue
 		}
 
-		if quit := e.handle(key); quit {
+		if quit := e.handle(event); quit {
 			break
 		}
 		e.render()
 	}
+}
+
+func (e *Engine) getEvent() Event {
+	buffer := make([]byte, 64)
+	n, err := os.Stdin.Read(buffer)
+	if err != nil {
+		return nil
+	}
+
+	input := buffer[:n]
+	var event Event
+
+	// -==[ mouse support ]==-
+	if n >= 6 && input[0] == '\033' && input[1] == '[' && input[2] == '<' {
+		var button, x, y int
+		var releaseChar rune
+
+		_, err := fmt.Sscanf(string(input[3:]), "%d;%d;%d%c", &button, &x, &y, &releaseChar)
+		if err == nil && releaseChar == 'm' { // on mouse press
+			_x := x - e.starting.X - termOffset
+			_y := y - e.starting.Y - termOffset
+			if _y < 0 || _x < 0 {
+				return nil
+			}
+
+			event = MouseEvent{X: _x, Y: _y}
+		}
+
+	} else
+
+	// -==[ key pressed ]==-
+	if n == 1 {
+		key := rune(input[0])
+		event = KeyEvent{Key: key}
+
+	} else {
+		return nil
+	}
+
+	return event
 }

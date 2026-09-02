@@ -3,6 +3,7 @@ package chord
 import (
 	"time"
 
+	"github.con/enotinc/gotari/engine"
 	"github.con/enotinc/gotari/engine/cmd"
 	"github.con/enotinc/gotari/engine/cursor"
 	"github.con/enotinc/gotari/enums/keys"
@@ -50,7 +51,16 @@ func (c *Chord) CursorInfo() (cursor.Kind, cursor.Position) {
 	}
 }
 
-func (c *Chord) Handle(key rune) cmd.CMD {
+func (c *Chord) Handle(event engine.Event) cmd.CMD {
+	var key rune
+
+	switch e := event.(type) {
+	case engine.MouseEvent:
+		return nil
+	case engine.KeyEvent:
+		key = e.Key
+	}
+
 	switch key {
 	case keys.Esc:
 		return cmd.CloseGame

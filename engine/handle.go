@@ -2,42 +2,27 @@ package engine
 
 import "github.con/enotinc/gotari/engine/cmd"
 
-// TODO: add mouse and arrows support
-func (e *Engine) handle(key rune) bool {
+func (e *Engine) handle(event Event) bool {
 	if e.game == nil {
-		c := (*e.menu).Handle(key)
+		c := (*e.menu).Handle(event)
 		if c != nil {
 			switch c {
 			case cmd.SelectGame:
 				e.clear()
 				e.game = (*e.menu).SelectedGame()
-				kind, pos := (*e.game).CursorInfo()
-				e.cursor.ChangeCursor(kind)
-				e.cursor.ChangePos(pos)
 
 			case cmd.QuitGotari:
 				return true
-
-			default:
-				kind, pos := (*e.game).CursorInfo()
-				e.cursor.ChangeCursor(kind)
-				e.cursor.ChangePos(pos)
 			}
 		}
 
 	} else {
-		command := (*e.game).Handle(key)
-		switch command {
+		c := (*e.game).Handle(event)
+		switch c {
 		case cmd.CloseGame:
 			e.clear()
 			e.game = nil
-
-		default:
-			kind, pos := (*e.game).CursorInfo()
-			e.cursor.ChangeCursor(kind)
-			e.cursor.ChangePos(pos)
 		}
-
 	}
 
 	return false
