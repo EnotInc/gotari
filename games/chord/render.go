@@ -6,6 +6,7 @@ import (
 	"strings"
 
 	color "github.con/enotinc/gotari/enums/color"
+	"github.con/enotinc/gotari/enums/keys"
 )
 
 const (
@@ -57,17 +58,31 @@ func (c *Chord) renderInputBox() []*string {
 	upper.WriteString(upperLeft)
 	upper.WriteString(border)
 	upper.WriteString(upperRight)
+	upper.WriteString(color.Reset)
 
 	lower.WriteString(lowerLeft)
 	lower.WriteString(border)
 	lower.WriteString(lowerRight)
+	lower.WriteString(color.Reset)
 
-	input := fmt.Sprintf("%s%s", color.LightBlue, c.input)
-	text := fmt.Sprintf("%s%s", color.Gray, c.text[c.cursor:])
-	line := fmt.Sprintf("%s%s", input, text)
+	var line strings.Builder
+	for i, ch := range c.input {
+		if byte(ch) != c.text[i] {
+			line.WriteString(color.Red)
+			if ch == keys.Space {
+				ch = '\u00b7'
+			}
+		} else {
+			line.WriteString(color.DarkBlue)
+		}
+		line.WriteRune(ch)
+	}
+	line.WriteString(color.Gray)
+	line.WriteString(c.text[len(c.input):])
 
 	middle.WriteString(vertical)
-	middle.WriteString(line)
+	middle.WriteString(line.String())
+	middle.WriteString(color.Reset)
 	middle.WriteString(vertical)
 
 	u := upper.String()
