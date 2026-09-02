@@ -69,6 +69,10 @@ func (e *Engine) renderMenu() {
 			diff.WriteString(trim)
 		}
 	}
+	x, y := e.cursor.GetRealPos(e.starting)
+	moveto := fmt.Sprintf("\033[%d;%dH", y, x)
+	diff.WriteString(moveto)
+
 	fmt.Print(diff.String())
 }
 
@@ -76,7 +80,7 @@ func (e *Engine) renderGame() {
 	var diff strings.Builder
 
 	kind, _ := (*e.game).CursorInfo()
-	e.cursor.changeCursor(kind)
+	e.cursor.ChangeCursor(kind)
 	render := (*e.game).Render()
 
 	if !e.fullscreen {
@@ -104,7 +108,7 @@ func (e *Engine) renderGame() {
 			diff.WriteString(trim)
 		}
 	}
-	x, y := e.cursor.getRealPos(e.starting)
+	x, y := e.cursor.GetRealPos(e.starting)
 	moveto := fmt.Sprintf("\033[%d;%dH", y, x)
 	diff.WriteString(moveto)
 

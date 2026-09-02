@@ -3,6 +3,7 @@ package menu
 import (
 	"github.con/enotinc/gotari/engine"
 	"github.con/enotinc/gotari/engine/cmd"
+	"github.con/enotinc/gotari/engine/cursor"
 	"github.con/enotinc/gotari/enums/keys"
 )
 
@@ -64,4 +65,8 @@ func (m *MainMenu) Handle(key rune) cmd.CMD {
 	}
 
 	return nil
+}
+
+func (m *MainMenu) CursorInfo() (cursor.Kind, cursor.Position) {
+	return cursor.Hidden, cursor.Position{}
 }

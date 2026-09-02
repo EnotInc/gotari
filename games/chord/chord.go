@@ -3,8 +3,8 @@ package chord
 import (
 	"time"
 
-	"github.con/enotinc/gotari/engine"
 	"github.con/enotinc/gotari/engine/cmd"
+	"github.con/enotinc/gotari/engine/cursor"
 	"github.con/enotinc/gotari/enums/keys"
 )
 
@@ -39,12 +39,12 @@ func Init() *Chord {
 	return c
 }
 
-func (c *Chord) CursorInfo() (engine.CursorKind, engine.Position) {
-	kind := engine.Line
+func (c *Chord) CursorInfo() (cursor.Kind, cursor.Position) {
+	kind := cursor.Line
 	if c.ended {
-		kind = engine.Hidden
+		kind = cursor.Hidden
 	}
-	return kind, engine.Position{
+	return kind, cursor.Position{
 		X: len(c.input) + 2,
 		Y: 2,
 	}

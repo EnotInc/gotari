@@ -1,8 +1,8 @@
 package tictactoe
 
 import (
-	"github.con/enotinc/gotari/engine"
 	"github.con/enotinc/gotari/engine/cmd"
+	"github.con/enotinc/gotari/engine/cursor"
 	"github.con/enotinc/gotari/enums/keys"
 )
 
@@ -40,8 +40,8 @@ func Init() *TTT {
 	return t
 }
 
-func (t *TTT) CursorInfo() (engine.CursorKind, engine.Position) {
-	return engine.Hidden, engine.Position{}
+func (t *TTT) CursorInfo() (cursor.Kind, cursor.Position) {
+	return cursor.Hidden, cursor.Position{}
 }
 
 func (t *TTT) Render() []*string {

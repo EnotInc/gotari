@@ -2,6 +2,7 @@ package engine
 
 import (
 	"github.con/enotinc/gotari/engine/cmd"
+	"github.con/enotinc/gotari/engine/cursor"
 	"golang.org/x/term"
 )
 
@@ -10,7 +11,7 @@ type Engine struct {
 	// list of games
 	Games []*Game
 
-	starting Position
+	starting cursor.Position
 
 	// selected (currently played) game
 	game *Game
@@ -22,28 +23,11 @@ type Engine struct {
 	hash map[int]uint32
 
 	fullscreen bool
-	cursor     *cursor
+	cursor     *cursor.Cursor
 
 	// additional stuff to work with terminal raw state
 	fdIn int
 	old  *term.State
-}
-
-type Position struct {
-	X,
-	Y int
-}
-
-type cursor struct {
-	// kind must me changed with cursor.changeKind() func
-	// this way cursor will be hide and showed properly
-	// otherwise new cursor kind will not be applyed
-	kind CursorKind
-
-	// Position is applyed to the begining of the render
-	// on fullscreen - starting point is top left of terminal window
-	// otherwise - starting point is at the begining of the line, right below the prompt
-	pos Position
 }
 
 type Menu interface {
@@ -59,6 +43,8 @@ type Menu interface {
 
 	// if engine resieve a CMD.SelectGame - this function will be called to get selected game
 	SelectedGame() *Game
+
+	CursorInfo() (cursor.Kind, cursor.Position)
 }
 
 type Game interface {
@@ -76,5 +62,5 @@ type Game interface {
 
 	// this funcion will be called before Render()
 	// after cursor kind will be apllied
-	CursorInfo() (CursorKind, Position)
+	CursorInfo() (cursor.Kind, cursor.Position)
 }

@@ -6,7 +6,7 @@ import (
 	"os"
 	"strings"
 
-	"github.con/enotinc/gotari/engine/cmd"
+	"github.con/enotinc/gotari/engine/cursor"
 	"github.con/enotinc/gotari/enums/ascii"
 	"golang.org/x/term"
 )
@@ -21,7 +21,7 @@ func Init(menu Menu) *Engine {
 		panic(err)
 	}
 
-	c := newCursor()
+	c := cursor.NewCursor()
 	e := &Engine{
 		// FIXME: move to options, or smth
 		fullscreen: false,
@@ -32,7 +32,7 @@ func Init(menu Menu) *Engine {
 		fdIn:   _fdIn,
 		cursor: c,
 	}
-	e.cursor.changeCursor(Hidden)
+	e.cursor.ChangeCursor(cursor.Hidden)
 	e.setStartedPoint()
 	return e
 }
@@ -53,7 +53,7 @@ func (e *Engine) setStartedPoint() {
 			y = row - termOffset
 		}
 	}
-	e.starting = Position{
+	e.starting = cursor.Position{
 		X: 0,
 		Y: y,
 	}
@@ -88,7 +88,7 @@ func (e *Engine) exit() {
 		quit.WriteString(ascii.ClearAfter)
 	}
 
-	quit.WriteString(_showCursor)
+	quit.WriteString(e.cursor.Reset())
 	fmt.Print(quit.String())
 	term.Restore(e.fdIn, e.old)
 }
@@ -110,39 +110,4 @@ func (e *Engine) Run() {
 		}
 		e.render()
 	}
-}
-
-// TODO: add mouse and arrows support
-func (e *Engine) handle(key rune) bool {
-	if e.game == nil {
-		c := (*e.menu).Handle(key)
-		if c != nil {
-			switch c {
-			case cmd.SelectGame:
-				e.clear()
-				e.game = (*e.menu).SelectedGame()
-				kind, pos := (*e.game).CursorInfo()
-				e.cursor.changeCursor(kind)
-				e.cursor.changePos(pos)
-			case cmd.QuitGotari:
-				return true
-			}
-		}
-
-	} else {
-		command := (*e.game).Handle(key)
-		switch command {
-		case cmd.CloseGame:
-			e.clear()
-			e.game = nil
-
-		default:
-			kind, pos := (*e.game).CursorInfo()
-			e.cursor.changeCursor(kind)
-			e.cursor.changePos(pos)
-		}
-
-	}
-
-	return false
 }
