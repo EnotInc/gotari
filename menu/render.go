@@ -3,6 +3,7 @@ package menu
 import (
 	"strings"
 
+	"github.con/enotinc/gotari/enums/ascii"
 	color "github.con/enotinc/gotari/enums/color"
 )
 
@@ -15,7 +16,7 @@ func (c *card) render(selected bool) []*string {
 		clr = color.LightBlue
 	}
 
-	border := strings.Repeat(horisontal, amount)
+	border := strings.Repeat(ascii.BorderHorisontal, amount)
 
 	var upperBorder strings.Builder
 	var lowerBorder strings.Builder
@@ -23,12 +24,12 @@ func (c *card) render(selected bool) []*string {
 
 	upperBorder.WriteString(clr)
 	upperBorder.WriteString(border)
-	upperBorder.WriteString(uppreCorner)
+	upperBorder.WriteString(ascii.BorderUpperRight)
 	upperBorder.WriteString(color.Reset)
 
 	lowerBorder.WriteString(clr)
 	lowerBorder.WriteString(border)
-	lowerBorder.WriteString(lowerCorner)
+	lowerBorder.WriteString(ascii.BorderLowerRight)
 	lowerBorder.WriteString(color.Reset)
 
 	gameName := c.name
@@ -41,7 +42,7 @@ func (c *card) render(selected bool) []*string {
 	middle.WriteString(nameSpace)
 	middle.WriteString(gameName)
 	middle.WriteString(clr)
-	middle.WriteString(vertical)
+	middle.WriteString(ascii.BorderVertical)
 	middle.WriteString(color.Reset)
 
 	u := upperBorder.String()

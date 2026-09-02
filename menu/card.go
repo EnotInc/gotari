@@ -4,13 +4,6 @@ import (
 	"github.con/enotinc/gotari/engine"
 )
 
-const (
-	horisontal  = "─"
-	uppreCorner = "╮"
-	vertical    = "│"
-	lowerCorner = "╯"
-)
-
 type card struct {
 	name string
 	game *engine.Game

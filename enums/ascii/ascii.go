@@ -13,4 +13,11 @@ const (
 	MoveDown       = "\033[B"
 	SaveCursorPos  = "\033[s"
 	ResetCursorPos = "\033[u"
+
+	BorderHorisontal = "─"
+	BorderVertical   = "│"
+	BorderUpperRight = "╮"
+	BorderLowerRight = "╯"
+	BorderUpperLeft  = "╭"
+	BorderLowerLeft  = "╰"
 )

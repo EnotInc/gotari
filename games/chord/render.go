@@ -5,19 +5,9 @@ import (
 	"math"
 	"strings"
 
+	"github.con/enotinc/gotari/enums/ascii"
 	color "github.con/enotinc/gotari/enums/color"
 	"github.con/enotinc/gotari/enums/keys"
-)
-
-const (
-	horisontal = "─"
-	vertical   = "│"
-
-	upperRight = "╮"
-	lowerRight = "╯"
-
-	upperLeft = "╭"
-	lowerLeft = "╰"
 )
 
 func (c *Chord) render() []*string {
@@ -53,16 +43,16 @@ func (c *Chord) renderInputBox() []*string {
 	var middle strings.Builder
 	var lower strings.Builder
 
-	border := strings.Repeat(horisontal, len(c.text))
+	border := strings.Repeat(ascii.BorderHorisontal, len(c.text))
 
-	upper.WriteString(upperLeft)
+	upper.WriteString(ascii.BorderUpperLeft)
 	upper.WriteString(border)
-	upper.WriteString(upperRight)
+	upper.WriteString(ascii.BorderUpperRight)
 	upper.WriteString(color.Reset)
 
-	lower.WriteString(lowerLeft)
+	lower.WriteString(ascii.BorderLowerLeft)
 	lower.WriteString(border)
-	lower.WriteString(lowerRight)
+	lower.WriteString(ascii.BorderLowerRight)
 	lower.WriteString(color.Reset)
 
 	var line strings.Builder
@@ -80,10 +70,10 @@ func (c *Chord) renderInputBox() []*string {
 	line.WriteString(color.Gray)
 	line.WriteString(c.text[len(c.input):])
 
-	middle.WriteString(vertical)
+	middle.WriteString(ascii.BorderVertical)
 	middle.WriteString(line.String())
 	middle.WriteString(color.Reset)
-	middle.WriteString(vertical)
+	middle.WriteString(ascii.BorderVertical)
 
 	u := upper.String()
 	m := middle.String()
