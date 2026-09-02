@@ -1,6 +1,9 @@
 package engine
 
-import "golang.org/x/term"
+import (
+	"github.con/enotinc/gotari/engine/cmd"
+	"golang.org/x/term"
+)
 
 // main engine struct
 type Engine struct {
@@ -24,7 +27,7 @@ type Engine struct {
 	old  *term.State
 }
 
-type CursorPosition struct {
+type Position struct {
 	x, y int
 }
 
@@ -34,7 +37,10 @@ type cursor struct {
 	// otherwise new cursor kind will not be applyed
 	kind CursorKind
 
-	pos CursorPosition
+	// Position is applyed to the begining of the render
+	// on fullscreen - starting point is top left of terminal window
+	// otherwise - starting point is at the begining of the line, right below the prompt
+	pos Position
 }
 
 type Menu interface {
@@ -46,7 +52,7 @@ type Menu interface {
 	// if game was selected in menu, this game will be returned
 	// if game wasn't selected - nil must me returned
 	// CMD - usend only to check for QuitGotari. If it catch this CMD - programm will be closed
-	Handle(key rune) CMD
+	Handle(key rune) cmd.CMD
 
 	// if engine resieve a CMD.SelectGame - this function will be called to get selected game
 	SelectedGame() *Game
@@ -63,10 +69,10 @@ type Game interface {
 
 	// used to handle input keys. Mouse support isn't ready yet
 	// func must return engine.CMD (CloseGame for example), or nil if nothing happened
-	Handle(key rune) CMD
+	Handle(key rune) cmd.CMD
 
 	// this funcion will be called before Render()
 	// after cursor kind will be apllied
-	// TODO: move cursor to the CursorPosition
-	CursorInfo() (CursorKind, CursorPosition)
+	// TODO: move cursor to the Position
+	CursorInfo() (CursorKind, Position)
 }

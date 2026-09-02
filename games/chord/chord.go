@@ -4,6 +4,7 @@ import (
 	"time"
 
 	"github.con/enotinc/gotari/engine"
+	"github.con/enotinc/gotari/engine/cmd"
 	"github.con/enotinc/gotari/enums/keys"
 )
 
@@ -38,15 +39,15 @@ func Init() *Chord {
 	return c
 }
 
-func (c *Chord) CursorInfo() (engine.CursorKind, engine.CursorPosition) {
+func (c *Chord) CursorInfo() (engine.CursorKind, engine.Position) {
 	// TODO: change cursor kind and position
-	return engine.Hidden, engine.CursorPosition{}
+	return engine.Hidden, engine.Position{}
 }
 
-func (c *Chord) Handle(key rune) engine.CMD {
+func (c *Chord) Handle(key rune) cmd.CMD {
 	switch key {
 	case keys.Esc:
-		return engine.CloseGame
+		return cmd.CloseGame
 	default:
 		c.handle(key)
 	}

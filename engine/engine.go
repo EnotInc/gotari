@@ -6,6 +6,7 @@ import (
 	"os"
 	"strings"
 
+	"github.con/enotinc/gotari/engine/cmd"
 	"github.con/enotinc/gotari/enums/ascii"
 	"golang.org/x/term"
 )
@@ -95,13 +96,13 @@ func (e *Engine) Run() {
 // TODO: add mouse and arrows support
 func (e *Engine) handle(key rune) bool {
 	if e.game == nil {
-		cmd := (*e.menu).Handle(key)
-		if cmd != nil {
-			switch cmd {
-			case SelectGame:
+		c := (*e.menu).Handle(key)
+		if c != nil {
+			switch c {
+			case cmd.SelectGame:
 				e.clear()
 				e.game = (*e.menu).SelectedGame()
-			case QuitGotari:
+			case cmd.QuitGotari:
 				return true
 			}
 		}
@@ -109,7 +110,7 @@ func (e *Engine) handle(key rune) bool {
 	} else {
 		command := (*e.game).Handle(key)
 		switch command {
-		case CloseGame:
+		case cmd.CloseGame:
 			e.clear()
 			e.game = nil
 		}

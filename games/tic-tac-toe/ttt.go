@@ -2,6 +2,7 @@ package tictactoe
 
 import (
 	"github.con/enotinc/gotari/engine"
+	"github.con/enotinc/gotari/engine/cmd"
 	"github.con/enotinc/gotari/enums/keys"
 )
 
@@ -39,18 +40,18 @@ func Init() *TTT {
 	return t
 }
 
-func (t *TTT) CursorInfo() (engine.CursorKind, engine.CursorPosition) {
-	return engine.Hidden, engine.CursorPosition{}
+func (t *TTT) CursorInfo() (engine.CursorKind, engine.Position) {
+	return engine.Hidden, engine.Position{}
 }
 
 func (t *TTT) Render() []*string {
 	return t.draw()
 }
 
-func (t *TTT) Handle(key rune) engine.CMD {
+func (t *TTT) Handle(key rune) cmd.CMD {
 	switch key {
 	case keys.Esc:
-		return engine.CloseGame
+		return cmd.CloseGame
 	case 'r':
 		t.reset()
 		return nil

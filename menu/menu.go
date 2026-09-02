@@ -2,6 +2,7 @@ package menu
 
 import (
 	"github.con/enotinc/gotari/engine"
+	"github.con/enotinc/gotari/engine/cmd"
 	"github.con/enotinc/gotari/enums/keys"
 )
 
@@ -41,7 +42,7 @@ func (m *MainMenu) Render() []*string {
 	return render
 }
 
-func (m *MainMenu) Handle(key rune) engine.CMD {
+func (m *MainMenu) Handle(key rune) cmd.CMD {
 	switch key {
 	case 'j':
 		if m.cursor < len(m.cards)-1 {
@@ -54,11 +55,11 @@ func (m *MainMenu) Handle(key rune) engine.CMD {
 		}
 
 	case keys.Esc:
-		return engine.QuitGotari
+		return cmd.QuitGotari
 
 	case keys.Enter, keys.Space:
 		if m.cursor >= 0 && m.cursor <= len(m.cards)-1 {
-			return engine.SelectGame
+			return cmd.SelectGame
 		}
 	}
 

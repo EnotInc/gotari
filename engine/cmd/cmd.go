@@ -1,4 +1,4 @@
-package engine
+package cmd
 
 type CMD interface {
 	String() string
