@@ -17,10 +17,24 @@ type Engine struct {
 	hash map[int]uint32
 
 	fullscreen bool
+	cursor     *cursor
 
 	// additional stuff to work with terminal raw state
 	fdIn int
 	old  *term.State
+}
+
+type CursorPosition struct {
+	x, y int
+}
+
+type cursor struct {
+	// kind must me changed with cursor.changeKind() func
+	// this way cursor will be hide and showed properly
+	// otherwise new cursor kind will not be applyed
+	kind CursorKind
+
+	pos CursorPosition
 }
 
 type Menu interface {
@@ -38,7 +52,6 @@ type Menu interface {
 	SelectedGame() *Game
 }
 
-// TODO: add func to set cursor position and type
 type Game interface {
 	// mainly used in menu, to get them name of the game
 	Name() string
@@ -51,4 +64,9 @@ type Game interface {
 	// used to handle input keys. Mouse support isn't ready yet
 	// func must return engine.CMD (CloseGame for example), or nil if nothing happened
 	Handle(key rune) CMD
+
+	// this funcion will be called before Render()
+	// after cursor kind will be apllied
+	// TODO: move cursor to the CursorPosition
+	CursorInfo() (CursorKind, CursorPosition)
 }

@@ -75,6 +75,8 @@ func (e *Engine) renderMenu() {
 func (e *Engine) renderGame() {
 	var diff strings.Builder
 
+	kind, _ := (*e.game).CursorInfo()
+	e.cursor.changeCursor(kind)
 	render := (*e.game).Render()
 
 	if !e.fullscreen {

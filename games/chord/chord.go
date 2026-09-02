@@ -38,6 +38,11 @@ func Init() *Chord {
 	return c
 }
 
+func (c *Chord) CursorInfo() (engine.CursorKind, engine.CursorPosition) {
+	// TODO: change cursor kind and position
+	return engine.Hidden, engine.CursorPosition{}
+}
+
 func (c *Chord) Handle(key rune) engine.CMD {
 	switch key {
 	case keys.Esc:

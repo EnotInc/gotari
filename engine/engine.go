@@ -20,15 +20,19 @@ func Init(menu Menu) *Engine {
 		panic(err)
 	}
 
-	return &Engine{
+	c := newCursor()
+	e := &Engine{
 		// FIXME: move to options, or smth
 		fullscreen: false,
 
-		hash: make(map[int]uint32),
-		menu: &menu,
-		old:  _old,
-		fdIn: _fdIn,
+		hash:   make(map[int]uint32),
+		menu:   &menu,
+		old:    _old,
+		fdIn:   _fdIn,
+		cursor: c,
 	}
+	e.cursor.changeCursor(Hidden)
+	return e
 }
 
 func (e *Engine) AddGame(g Game) {
@@ -64,6 +68,7 @@ func (e *Engine) exit() {
 		quit.WriteString(ascii.ClearAfter)
 	}
 
+	quit.WriteString(_showCursor)
 	fmt.Print(quit.String())
 	term.Restore(e.fdIn, e.old)
 }

@@ -39,6 +39,10 @@ func Init() *TTT {
 	return t
 }
 
+func (t *TTT) CursorInfo() (engine.CursorKind, engine.CursorPosition) {
+	return engine.Hidden, engine.CursorPosition{}
+}
+
 func (t *TTT) Render() []*string {
 	return t.draw()
 }
