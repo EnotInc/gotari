@@ -42,10 +42,7 @@ func (t *TTT) clickToRune(x, y int) rune {
 
 	getRow := func() int {
 		switch y {
-		case 0:
-			return 0
-
-		case 2, 4:
+		case 0, 2, 4:
 			return y / 2
 
 		default:

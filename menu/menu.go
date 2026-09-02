@@ -89,8 +89,7 @@ func (m *MainMenu) selectGameAt(x, y int) (oppened bool) {
 		return false
 	}
 
-	_y := y / 3 // height of game in render
-	_y -= 1     // terminal ofset
+	_y := (y - 1) / 3 // height of game in render
 	if _y < 0 || _y > len(m.cards) {
 		return false
 	}
