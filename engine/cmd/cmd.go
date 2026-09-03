@@ -16,6 +16,9 @@ func newCMD(text string) CMD {
 	return &cmdstring{s: text}
 }
 
+// -==[ Game Commands ]==-
 var SelectGame = newCMD("SelectGame")
 var CloseGame = newCMD("CloseGame")
+
+// -==[ Menu Commands ]==-
 var QuitGotari = newCMD("QuitGotari")

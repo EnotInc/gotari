@@ -48,6 +48,7 @@ type Menu interface {
 	// if engine resieve a CMD.SelectGame - this function will be called to get selected game
 	SelectedGame() *Game
 
+	// calls before render
 	CursorInfo() (cursor.Kind, cursor.Position)
 }
 

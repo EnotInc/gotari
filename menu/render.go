@@ -38,10 +38,11 @@ func (c *card) render(selected bool) []*string {
 		nameAmount = 0
 		gameName = c.name[:amount]
 	}
-	nameSpace := strings.Repeat(" ", nameAmount)
+	nameSpace := strings.Repeat(" ", nameAmount-1)
 	middle.WriteString(nameSpace)
 	middle.WriteString(gameName)
 	middle.WriteString(clr)
+	middle.WriteString(" ")
 	middle.WriteString(ascii.BorderVertical)
 	middle.WriteString(color.Reset)
 
