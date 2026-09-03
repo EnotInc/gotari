@@ -6,13 +6,14 @@ import (
 	"strings"
 
 	"github.con/enotinc/gotari/engine/cursor"
+	"github.con/enotinc/gotari/engine/options"
 	"github.con/enotinc/gotari/enums/ascii"
 	"golang.org/x/term"
 )
 
 const termOffset int = 1
 
-func Init(menu Menu) *Engine {
+func Init(opt *options.Options, menu Menu) *Engine {
 	_fdIn := int(os.Stdin.Fd())
 
 	_old, err := term.MakeRaw(_fdIn)
@@ -22,11 +23,9 @@ func Init(menu Menu) *Engine {
 
 	c := cursor.NewCursor()
 	e := &Engine{
-		// FIXME: move to options, or smth
-		fullscreen: false,
-
 		hash:   make(map[int]uint32),
 		menu:   &menu,
+		opt:    opt,
 		old:    _old,
 		fdIn:   _fdIn,
 		cursor: c,
@@ -42,7 +41,7 @@ func (e *Engine) AddGame(g Game) {
 
 func (e *Engine) setStartedPoint() {
 	y := 0
-	if !e.fullscreen {
+	if !e.opt.Fullscreen {
 		var row, col int
 		fmt.Print("\033[6n")
 		_, err := fmt.Fscanf(os.Stdin, "\033[%d;%dR", &row, &col)
@@ -60,7 +59,7 @@ func (e *Engine) setStartedPoint() {
 
 func (e *Engine) begin() {
 	var begin strings.Builder
-	if e.fullscreen {
+	if e.opt.Fullscreen {
 		begin.WriteString(ascii.SaveTerminal)
 		begin.WriteString(ascii.ClearHistory)
 		begin.WriteString(ascii.ClearView)
@@ -78,7 +77,7 @@ func (e *Engine) begin() {
 func (e *Engine) exit() {
 	var quit strings.Builder
 
-	if e.fullscreen {
+	if e.opt.Fullscreen {
 		quit.WriteString(ascii.ClearView)
 		quit.WriteString(ascii.ClearHistory)
 		quit.WriteString(ascii.MoveToStart)
@@ -128,7 +127,7 @@ func (e *Engine) getEvent() Event {
 	var event Event
 
 	// -==[ mouse support ]==-
-	if n >= 6 && input[0] == '\033' && input[1] == '[' && input[2] == '<' {
+	if e.opt.EnableMouse && n >= 6 && input[0] == '\033' && input[1] == '[' && input[2] == '<' {
 		var button, x, y int
 		var releaseChar rune
 

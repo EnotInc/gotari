@@ -90,7 +90,7 @@ func (m *MainMenu) selectGameAt(x, y int) (oppened bool) {
 	}
 
 	_y := (y - 1) / 3 // height of game in render
-	if _y < 0 || _y > len(m.cards) {
+	if _y < 0 || _y > len(m.cards)-1 {
 		return false
 	}
 

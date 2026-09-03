@@ -3,6 +3,7 @@ package engine
 import (
 	"github.con/enotinc/gotari/engine/cmd"
 	"github.con/enotinc/gotari/engine/cursor"
+	"github.con/enotinc/gotari/engine/options"
 	"golang.org/x/term"
 )
 
@@ -11,7 +12,11 @@ type Engine struct {
 	// list of games
 	Games []*Game
 
+	// calculates on Init func
+	// used as starting point for render and to transfer real mouse click position to relative
 	starting cursor.Position
+
+	opt *options.Options
 
 	// selected (currently played) game
 	game *Game
@@ -22,8 +27,7 @@ type Engine struct {
 	// map of line indexes to saved hashes
 	hash map[int]uint32
 
-	fullscreen bool
-	cursor     *cursor.Cursor
+	cursor *cursor.Cursor
 
 	// additional stuff to work with terminal raw state
 	fdIn int

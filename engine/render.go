@@ -36,7 +36,7 @@ func trimNewLine(l string) string {
 
 func (e *Engine) clear() {
 	var clear strings.Builder
-	if e.fullscreen {
+	if e.opt.Fullscreen {
 		clear.WriteString(ascii.ClearView)
 		clear.WriteString(ascii.MoveToStart)
 	} else {
@@ -52,7 +52,7 @@ func (e *Engine) renderMenu() {
 
 	render := (*e.menu).Render()
 
-	if !e.fullscreen {
+	if !e.opt.Fullscreen {
 		diff.WriteString(ascii.ResetCursorPos)
 	}
 
@@ -64,7 +64,7 @@ func (e *Engine) renderMenu() {
 			var pos string
 			trim := trimNewLine(*line)
 
-			if e.fullscreen {
+			if e.opt.Fullscreen {
 				pos = fmt.Sprintf("\033[%d;%d;H", index+termOffset, termOffset)
 			} else {
 				pos = "\n\r"
@@ -91,7 +91,7 @@ func (e *Engine) renderGame() {
 	e.cursor.ChangeCursor(kind)
 	render := (*e.game).Render()
 
-	if !e.fullscreen {
+	if !e.opt.Fullscreen {
 		diff.WriteString(ascii.ResetCursorPos)
 	}
 
@@ -103,7 +103,7 @@ func (e *Engine) renderGame() {
 			var pos string
 			trim := trimNewLine(*line)
 
-			if e.fullscreen {
+			if e.opt.Fullscreen {
 				pos = fmt.Sprintf("\033[%d;%d;H", index+termOffset, termOffset)
 			} else {
 				pos = "\n\r"
