@@ -8,12 +8,14 @@ import (
 )
 
 type MainMenu struct {
+	logo   []*string
 	cards  []*card
 	cursor int
 }
 
 func Init() *MainMenu {
 	return &MainMenu{
+		logo:   getLogo(),
 		cards:  make([]*card, 0),
 		cursor: 0,
 	}
@@ -33,9 +35,9 @@ func (m *MainMenu) SelectedGame() *engine.Game {
 func (m *MainMenu) Render() []*string {
 	var render []*string
 	title := " List of games:"
-	clue := " press <enter> or <space> to select a game. <esc> to quit"
+
+	render = append(render, m.logo...)
 	render = append(render, &title)
-	render = append(render, &clue)
 	for index, card := range m.cards {
 		render = append(render, card.render(index == m.cursor)...)
 	}

@@ -7,6 +7,26 @@ import (
 	color "github.con/enotinc/gotari/enums/color"
 )
 
+func getLogo() []*string {
+	lines := []string{
+		"",
+		"\t ██████╗   ██████╗  ████████╗  █████╗  ██████╗  ██╗",
+		"\t██╔════╝  ██╔═══██╗ ╚══██╔══╝ ██╔══██╗ ██╔══██╗ ██║",
+		"\t██║  ███╗ ██║   ██║    ██║    ███████║ ██████╔╝ ██║",
+		"\t██║   ██║ ██║   ██║    ██║    ██╔══██║ ██╔══██╗ ██║",
+		"\t╚██████╔╝ ╚██████╔╝    ██║    ██║  ██║ ██║  ██║ ██║",
+		"\t ╚═════╝   ╚═════╝     ╚═╝    ╚═╝  ╚═╝ ╚═╝  ╚═╝ ╚═╝",
+		"",
+	}
+
+	var logo []*string
+	for _, l := range lines {
+		logo = append(logo, &l)
+	}
+
+	return logo
+}
+
 func (c *card) render(selected bool) []*string {
 	var render []*string
 	amount := 20
